@@ -17,8 +17,24 @@ import coordinadoraRoutes from './src/endpoints/Coordinadora.js';
 const app = express(); // ✅ debe ir ANTES de cualquier `app.use(...)`
 const PORT = process.env.PORT || 5000;
 
+// Configuración de CORS para producción y desarrollo
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://your-vercel-app.vercel.app', // Reemplaza con tu dominio de Vercel
+  process.env.FRONTEND_URL // Variable de entorno para la URL del frontend
+].filter(Boolean);
+
 app.use(cors({
-  origin: 'http://localhost:3000', 
+  origin: function (origin, callback) {
+    // Permitir requests sin origin (como mobile apps o curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
@@ -41,6 +57,12 @@ app.get('/', (req, res) => {
   res.send('Welcome to the API!');
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// Para desarrollo local
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
+
+// Exportar para Vercel
+export default app;

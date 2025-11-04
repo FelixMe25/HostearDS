@@ -1,9 +1,29 @@
 {
+  "name": "hostear-ds-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install && cd API && npm install && cd ../frontend && npm install",
+    "dev": "concurrently \"npm run dev:api\" \"npm run dev:frontend\"",
+    "dev:api": "cd API && npm run dev",
+    "dev:frontend": "cd frontend && npm start",
+    "build": "cd frontend && npm run build",
+    "start": "cd API && npm start",
+    "build:api": "cd API && npm install",
+    "build:frontend": "cd frontend && npm install && npm run build"
+  },
+  "workspaces": [
+    "API",
+    "frontend"
+  ],
   "dependencies": {
     "bootstrap": "^5.3.5",
     "chart.js": "^4.4.9",
     "react-bootstrap": "^2.10.9",
     "react-chartjs-2": "^5.3.0",
     "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
   }
 }

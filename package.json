@@ -3,14 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "install:all": "npm install && cd API && npm install && cd ../frontend && npm install",
     "dev": "concurrently \"npm run dev:api\" \"npm run dev:frontend\"",
     "dev:api": "cd API && npm run dev",
     "dev:frontend": "cd frontend && npm start",
-    "build": "cd frontend && npm run build",
-    "start": "cd API && npm start",
-    "build:api": "cd API && npm install",
-    "build:frontend": "cd frontend && npm install && npm run build"
+    "build": "cd frontend && npm install && npm run build",
+    "start": "cd API && npm start"
   },
   "workspaces": [
     "API",
